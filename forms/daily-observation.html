@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Observation Report (FTEP)</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #08111d;
+      color: #fff;
+    }
+
+    .container {
+      width: min(1450px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .top-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: #8fb3ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .top-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #0b1627;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 24px;
+    }
+
+    .section {
+      margin-bottom: 26px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .section h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      color: #dbe7ff;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,.88);
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.14);
+      background: #132034;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #2f66ff;
+      box-shadow: 0 0 0 3px rgba(47, 102, 255, 0.15);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .row-4 {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    .rating-table {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rating-header,
+.rating-row {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.6fr) repeat(5, minmax(52px, 70px)) minmax(70px, 90px);
+  gap: 8px;
+  align-items: stretch;
+}
+
+    .rating-header > div {
+      background: #122038;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .rating-category {
+      background: #132034;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+    }
+
+    .rating-cell {
+      background: #132034;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      cursor: pointer;
+      user-select: none;
+      transition: .15s ease;
+      font-size: 13px;
+      text-align: center;
+      padding: 4px;
+    }
+
+    .rating-cell:hover {
+      border-color: #2f66ff;
+      background: #172944;
+    }
+
+    .rating-cell.active {
+      background: #2f55b8;
+      border-color: #4b79ff;
+      font-weight: 700;
+    }
+
+    .ds-cell {
+      background: #132034;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      min-height: 52px;
+      padding: 8px;
+    }
+
+    .ds-cell input {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: 0;
+      outline: none;
+      color: #fff;
+      text-align: center;
+      font: inherit;
+    }
+
+    .group-title {
+      margin: 22px 0 10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      font-weight: 700;
+      color: #dbe7ff;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2f55b8;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #3a66d9;
+    }
+
+    .btn-secondary {
+      background: #1a2940;
+      color: white;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,.55);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 18px;
+      z-index: 9999;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 900px);
+      background: #ffffff;
+      color: #333;
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 16px;
+      border-bottom: 1px solid #e5e5e5;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: 0;
+      color: #888;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+      width: auto;
+    }
+
+    .modal-body {
+      padding: 18px 30px 18px;
+    }
+
+    .modal-field {
+      margin-bottom: 16px;
+    }
+
+    .modal-label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .modal-row {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .modal-input {
+      flex: 1;
+      height: 38px;
+      border: 1px solid #d6d6d6;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 15px;
+      color: #444;
+      background: #fff;
+    }
+
+    .modal-copy-btn {
+      min-width: 120px;
+      height: 38px;
+      border: 1px solid #9aa4af;
+      border-radius: 4px;
+      background: #f8f8f8;
+      color: #5d6a75;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 12px;
+    }
+
+    .modal-copy-btn:hover {
+      background: #eeeeee;
+    }
+
+    .modal-textarea-row {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .modal-textarea {
+      flex: 1;
+      min-height: 340px;
+      resize: vertical;
+      border: 1px solid #d6d6d6;
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 15px;
+      color: #444;
+      background: #fff;
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .modal-footer {
+      padding: 14px 16px;
+      border-top: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #fff;
+    }
+
+    .modal-btn {
+      border: 0;
+      border-radius: 4px;
+      height: 40px;
+      padding: 0 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .modal-btn-secondary {
+      background: #6c757d;
+      color: #fff;
+    }
+
+    .modal-btn-primary {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    @media (max-width: 1100px) {
+  .rating-header,
+  .rating-row {
+    grid-template-columns: minmax(260px, 1.6fr) repeat(5, minmax(44px, 60px)) minmax(60px, 85px);
+  }
+}
+
+    @media (max-width: 900px) {
+      .row,
+      .row-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-row,
+      .modal-textarea-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .modal-copy-btn {
+        width: 100%;
+      }
+
+      .rating-header,
+      .rating-row {
+        min-width: 820px;
+      }
+
+      .rating-scroll {
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <a class="top-link" href="../index.html">← Назад на главную</a>
+    <h1>Daily Observation Report (FTEP)</h1>
+    <p class="subtitle">Заполните поля, выставьте оценки кликами и получите готовый BBCode.</p>
+
+    <div class="layout">
+      <section class="panel">
+        <h2>Заполнение DOR</h2>
+
+        <form id="dorForm">
+          <div class="section">
+            <h3>I. General Information</h3>
+
+            <div class="row-4">
+              <div class="field">
+                <label for="traineeName">Полное имя стажёра</label>
+                <input id="traineeName" type="text" placeholder="ИМЯ ФАМИЛИЯ">
+              </div>
+
+              <div class="field">
+                <label for="badge">Маркировка</label>
+                <input id="badge" type="text" placeholder="0X00">
+              </div>
+
+              <div class="field">
+                <label for="patrolDate">Дата патрулирования</label>
+                <input id="patrolDate" type="text" placeholder="ДД/МММ/2026">
+              </div>
+
+              <div class="field">
+                <label for="patrolTime">Начало и конец патруля</label>
+                <input id="patrolTime" type="text" placeholder="00:00 - 00:00">
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>II. Rating by Category</h3>
+            <div class="hint">
+  <div>N/O (Not Observed) — не выявлено.</div>
+  <div>NRT (Trainee is Not Responding to Training) — стажёр не поддаётся обучению.</div>
+  <div>S (Superior) — превосходно.</div>
+  <div>C (Competent) — отвечает минимальным стандартам.</div>
+  <div>N/I (Need Improvement) — необходимо улучшение.</div>
+  <div>DS (Documented Situatuion) — Документированные ситуации.</div>
+  <div>DS# — Количество задокументированых ситуаций.</div>
+</div>
+<br><br>
+            <div class="rating-scroll">
+              <div class="rating-table" id="ratingTable"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>III. Narrative Evaluation</h3>
+
+            <div class="field">
+              <label for="liked">Что вам больше всего понравилось в стажёре за день?</label>
+              <textarea id="liked" placeholder="-"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="disliked">Что вам больше всего не понравилось в стажёре за день?</label>
+              <textarea id="disliked"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="recommendations">Ваши рекомендации по переходу стажера в следующую фазу</label>
+              <textarea id="recommendations" placeholder="-"></textarea>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>IV. Documented Situations (DS)</h3>
+            <div class="field">
+              <label for="documentedSituations">Задокументированные ситуации</label>
+              <textarea id="documentedSituations" placeholder="1. ..."></textarea>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>OOC. Уровень игры</h3>
+
+            <div class="field">
+              <label for="oocQuality">Качество и уровень игры, соответствие роли</label>
+              <textarea id="oocQuality"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="oocBehavior">Поведение игрока в OOC</label>
+              <textarea id="oocBehavior"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="oocComments">Ваши личные рекомендации / комментарии и замечания</label>
+              <textarea id="oocComments" placeholder="-"></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary">Сгенерировать</button>
+            <button type="reset" class="btn-secondary">Очистить</button>
+          </div>
+
+          <div class="hint">После генерации откроется окно с Topic Name и готовым BBCode.</div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="bbcodeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span>Here is your BBCode!</span>
+        <button type="button" class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <div class="modal-field">
+          <label class="modal-label" for="bbcodeOutput">BBCode</label>
+          <div class="modal-textarea-row">
+            <textarea id="bbcodeOutput" class="modal-textarea" readonly></textarea>
+            <button type="button" class="modal-copy-btn" id="copyBbcodeBtn">Копировать</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+  <button type="button" class="modal-btn modal-btn-secondary" id="closeFooterBtn">Закрыть</button>
+</div>
+    </div>
+  </div>
+
+  <script>
+    const ratingConfig = [
+      { group: "ЛИЧНЫЕ КАЧЕСТВА", items: [
+        { key: "r1", label: "1. ОТНОШЕНИЕ К КРИТИКЕ/КУРАТОРУ/ПРОГРАММЕ" },
+        { key: "r2", label: "2. ОТНОШЕНИЕ К ПОЛИЦЕЙСКОЙ РАБОТЕ" },
+        { key: "r3", label: "3. ЭТИКА И ДОБРОСОВЕСТНОСТЬ" },
+        { key: "r4", label: "4. УМЕНИЕ ВЛИЯТЬ НА ОКРУЖАЮЩИХ" }
+      ]},
+      { group: "ВЗАИМООТНОШЕНИЯ", items: [
+        { key: "r5", label: "5. С ГРАЖДАНАМИ/ОБЩЕСТВОМ" },
+        { key: "r6", label: "6. С ДРУГИМИ ОФИЦЕРАМИ ДЕПАРТАМЕНТА" }
+      ]},
+      { group: "НАВЫКИ", items: [
+        { key: "r7", label: "7. НАВЫКИ ВОЖДЕНИЯ" },
+        { key: "r8", label: "8. ЗНАНИЕ ГОРОДА, ОРИЕНТАЦИЯ" },
+        { key: "r9", label: "9. НАВЫКИ КООРДИНАЦИИ" },
+        { key: "r10", label: "10. ПОЛЕВЫЕ ПОКАЗАТЕЛИ: НОРМАЛЬНЫЕ УСЛОВИЯ" },
+        { key: "r11", label: "11. ПОЛЕВЫЕ ПОКАЗАТЕЛИ: СТРЕССОВЫЕ УСЛОВИЯ" },
+        { key: "r12", label: "12. ИНИЦИАТИВНОСТЬ В ВЫБОРЕ СИТУАЦИЙ" },
+        { key: "r13", label: "13. БЕЗОПАСНОСТЬ ОФИЦЕРА" },
+        { key: "r14", label: "14. ИСПОЛЬЗОВАНИЕ РАЦИИ" }
+      ]},
+      { group: "ЗНАНИЯ", items: [
+        { key: "r15", label: "15. ЗНАНИЕ ПОЛИТИК И ПРОЦЕДУР ДЕПАРТАМЕНТА" }
+      ]}
+    ];
+
+    const ratingLabels = ["N/O", "N/I", "C", "S", "NRT", "DS"];
+    const ratingValues = ["NO", "NI", "C", "S", "NRT"];
+
+    const ratingState = {};
+
+    function initRatings() {
+      const container = document.getElementById("ratingTable");
+
+      const header = document.createElement("div");
+      header.className = "rating-header";
+      header.innerHTML = `
+  <div>КАТЕГОРИИ</div>
+  <div>N/O</div>
+  <div>N/I</div>
+  <div>C</div>
+  <div>S</div>
+  <div>NRT</div>
+  <div>DS #</div>
+`;
+      container.appendChild(header);
+
+      for (const group of ratingConfig) {
+        const groupTitle = document.createElement("div");
+        groupTitle.className = "group-title";
+        groupTitle.textContent = group.group;
+        container.appendChild(groupTitle);
+
+        for (const item of group.items) {
+          ratingState[item.key] = { rating: "", ds: "" };
+
+          const row = document.createElement("div");
+          row.className = "rating-row";
+
+          const category = document.createElement("div");
+          category.className = "rating-category";
+          category.textContent = item.label;
+          row.appendChild(category);
+
+          for (const val of ratingValues) {
+            const cell = document.createElement("div");
+            cell.className = "rating-cell";
+            cell.textContent = "";
+            cell.dataset.key = item.key;
+            cell.dataset.value = val;
+            cell.addEventListener("click", () => {
+              ratingState[item.key].rating = val;
+              repaintRow(item.key);
+            });
+            row.appendChild(cell);
+          }
+
+          const dsInputWrap = document.createElement("div");
+          dsInputWrap.className = "ds-cell";
+          dsInputWrap.innerHTML = `<input type="text" data-ds="${item.key}" placeholder="#1">`;
+          dsInputWrap.querySelector("input").addEventListener("input", (e) => {
+            ratingState[item.key].ds = e.target.value.trim();
+          });
+          row.appendChild(dsInputWrap);
+
+          container.appendChild(row);
+        }
+      }
+    }
+
+    function repaintRow(key) {
+      document.querySelectorAll(`.rating-cell[data-key="${key}"]`).forEach(cell => {
+        cell.classList.toggle("active", ratingState[key].rating === cell.dataset.value);
+        cell.textContent = ratingState[key].rating === cell.dataset.value ? "X" : "";
+        if (cell.dataset.value === "DS" && ratingState[key].rating !== "DS") {
+          cell.textContent = "DS";
+        }
+      });
+    }
+
+    function val(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    }
+
+    function dsText(key) {
+      return ratingState[key]?.ds || "";
+    }
+    
+    function symbol(selected, target) {
+      return selected === target ? "[center][X][/center]" : "[center][ ][/center]";
+    }
+
+    function dsSymbol(selected) {
+      return selected === "DS" ? "[center][X][/center]" : "[center][/center]";
+    }
+
+    function ratingRow(key, label) {
+      const selected = ratingState[key]?.rating || "";
+      const ds = dsText(key);
+
+      return `[coll][size=90][b]${label}[/b][/size]|[coll6]${symbol(selected, "NO")}|${symbol(selected, "NI")}|${symbol(selected, "C")}|${symbol(selected, "S")}|${symbol(selected, "NRT")}|[center]${ds || (selected === "DS" ? "DS" : "")}[/center][/coll6][/coll]`;
+    }
+
+    function buildBBCode() {
+      return `[doc][color=#000000][coll3]|[center]CENTRAL COMMUNITY POLICE STATION
+[size=120][b]DAILY OBSERVATION REPORT[/b][/size][/center]|[right][size=85]LOS SANTOS POLICE DEPARTMENT
+CENTRAL PATROL DIVISION[/size][/right][/coll3][/color]
+[doc_b=I. GENERAL INFORMATION][color=#000000]
+[coll][a=ПОЛНОЕ ИМЯ СТАЖЁРА]${val("traineeName") || "-"}[/a]
+[a=МАРКИРОВКА]${val("badge") || "-"}[/a]|[a=ДАТА ПАТРУЛИРОВАНИЯ]${val("patrolDate") || "-"}[/a]
+[a=НАЧАЛО И КОНЕЦ ПАТРУЛЯ]${val("patrolTime") || "-"}[/a][/coll][/color][/doc_b]
+[doc_b=II. RATING BY CATEGORY][coll][center][b]КАТЕГОРИИ[/b][/center]|[coll6][center][b]N/O[/b][/center]|[center][b]N/I[/b][/center]|[center][b]C[/b][/center]|[center][b]S[/b][/center]|[center][b]NRT[/b][/center]|[center][b]DS #[/b][/center][/coll6][/coll][hr][/hr][coll][size=100][b][u]ЛИЧНЫЕ КАЧЕСТВА[/u][/b][/size]|[coll6]|||||[/coll6][/coll]${ratingRow("r1", "1. ОТНОШЕНИЕ К КРИТИКЕ/КУРАТОРУ/ПРОГРАММЕ")}${ratingRow("r2", "2. ОТНОШЕНИЕ К ПОЛИЦЕЙСКОЙ РАБОТЕ")}${ratingRow("r3", "3. ЭТИКА И ДОБРОСОВЕСТНОСТЬ")}${ratingRow("r4", "4. УМЕНИЕ ВЛИЯТЬ НА ОКРУЖАЮЩИХ")}[coll]|[coll6]|||||[/coll6][/coll]
+[coll][size=100][b][u]ВЗАИМООТНОШЕНИЯ[/u][/b][/size]|[coll6]|||||[/coll6][/coll]${ratingRow("r5", "5. С ГРАЖДАНАМИ/ОБЩЕСТВОМ")}${ratingRow("r6", "6. С ДРУГИМИ ОФИЦЕРАМИ ДЕПАРТАМЕНТА")}[coll]|[coll6]|||||[/coll6][/coll]
+[coll][size=100][b][u]НАВЫКИ[/u][/b][/size]|[coll6]|||||[/coll6][/coll]${ratingRow("r7", "7. НАВЫКИ ВОЖДЕНИЯ")}${ratingRow("r8", "8. ЗНАНИЕ ГОРОДА, ОРИЕНТАЦИЯ")}${ratingRow("r9", "9. НАВЫКИ КООРДИНАЦИИ")}${ratingRow("r10", "10. ПОЛЕВЫЕ ПОКАЗАТЕЛИ: НОРМАЛЬНЫЕ УСЛОВИЯ")}${ratingRow("r11", "11. ПОЛЕВЫЕ ПОКАЗАТЕЛИ: СТРЕССОВЫЕ УСЛОВИЯ")}${ratingRow("r12", "12. ИНИЦИАТИВНОСТЬ В ВЫБОРЕ СИТУАЦИЙ")}${ratingRow("r13", "13. БЕЗОПАСНОСТЬ ОФИЦЕРА")}${ratingRow("r14", "14. ИСПОЛЬЗОВАНИЕ РАЦИИ")}[coll]|[coll6]|||||[/coll6][/coll]
+[coll][size=100][b][u]ЗНАНИЯ[/u][/b][/size]|[coll6]|||||[/coll6][/coll]${ratingRow("r15", "15. ЗНАНИЕ ПОЛИТИК И ПРОЦЕДУР ДЕПАРТАМЕНТА")}[/doc_b]
+
+[doc_b=III. NARRATIVE EVALUATION][color=#000000] 
+[b]ЧТО ВАМ БОЛЬШЕ ВСЕГО ПОНРАВИЛОСЬ В СТАЖЕРЕ ЗА ДЕНЬ?[/b]
+[quote]${val("liked") || "-"}[/quote]
+
+[b]ЧТО ВАМ БОЛЬШЕ ВСЕГО НЕ ПОНРАВИЛОСЬ В СТАЖЕРЕ ЗА ДЕНЬ?[/b]
+[quote]${val("disliked") || "-"}[/quote]
+
+[b]ВАШИ РЕКОМЕНДАЦИИ ПО ПЕРЕХОДУ СТАЖЕРА В СЛЕДУЮЩУЮ ФАЗУ[/b]
+[quote]${val("recommendations") || "-"}[/quote]
+[/color][/doc_b]
+
+[doc_b=IV. DOCUMENTED SITUATIONS (DS)][color=#000000]
+[b]ЗАДОКУМЕНТИРОВАННЫЕ СИТУАЦИИ[/b]
+[quote]${val("documentedSituations") || "-"}[/quote]
+[/color][/doc_b]
+
+[doc_b=(( OOC. УРОВЕНЬ ИГРЫ ))][color=#000000]
+[b]КАЧЕСТВО И УРОВЕНЬ ИГРЫ, СООТВЕТСТВИЕ РОЛИ[/b]
+[quote]${val("oocQuality") || "-"}[/quote]
+
+[b]ПОВЕДЕНИЕ ИГРОКА В ООС[/b]
+[quote]${val("oocBehavior") || "-"}[/quote]
+
+[b]ВАШИ ЛИЧНЫЕ РЕКОМЕНДАЦИИ/КОММЕНТАРИИ И ЗАМЕЧАНИЯ[/b]
+[quote]${val("oocComments") || "-"}[/quote]
+[/color][/doc_b]
+[borderb=#000][/borderb][/doc]`;
+    }
+
+    const form = document.getElementById("dorForm");
+    const modal = document.getElementById("bbcodeModal");
+    const bbcodeOutput = document.getElementById("bbcodeOutput");
+
+    const copyBbcodeBtn = document.getElementById("copyBbcodeBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const closeFooterBtn = document.getElementById("closeFooterBtn");
+    
+    function openModal() {
+      modal.classList.add("show");
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+    }
+
+    async function copyText(text, button) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const old = button.textContent;
+        button.textContent = "Скопировано";
+        setTimeout(() => {
+          button.textContent = old;
+        }, 1200);
+      } catch {
+        alert("Не удалось скопировать текст.");
+      }
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      bbcodeOutput.value = buildBBCode();
+      openModal();
+    });
+
+    form.addEventListener("reset", function() {
+      for (const key in ratingState) {
+        ratingState[key] = { rating: "", ds: "" };
+      }
+      document.querySelectorAll(".rating-cell").forEach(cell => {
+        cell.classList.remove("active");
+        cell.textContent = cell.dataset.value === "DS" ? "DS" : "";
+      });
+      document.querySelectorAll(".ds-cell input").forEach(input => {
+        input.value = "";
+      });
+    });
+
+      copyBbcodeBtn.addEventListener("click", function() {
+      copyText(bbcodeOutput.value, copyBbcodeBtn);
+    });
+
+    closeModalBtn.addEventListener("click", closeModal);
+    closeFooterBtn.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    initRatings();
+  </script>
+</body>
+</html>
