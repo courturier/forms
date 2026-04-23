@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academy Application</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #08111d;
+      color: #ffffff;
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    .top-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #8fb3ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .top-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0 0 24px;
+      font-size: 32px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #0b1627;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 22px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.84);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: #132034;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #2f66ff;
+      box-shadow: 0 0 0 3px rgba(47, 102, 255, 0.15);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2f55b8;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #3a66d9;
+    }
+
+    .btn-secondary {
+      background: #1a2940;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .output {
+      white-space: pre-wrap;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.92);
+      min-height: 400px;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <a class="top-link" href="../index.html">← Назад на главную</a>
+    <h1>Academy Application Generator</h1>
+
+    <div class="layout">
+      <section class="panel">
+        <h2>Заполнение формы</h2>
+
+        <form id="academyForm">
+          <div class="row">
+            <div class="field">
+              <label for="fullName">Имя и фамилия</label>
+              <input id="fullName" name="fullName" type="text" placeholder="John Smith" required>
+            </div>
+
+            <div class="field">
+              <label for="age">Возраст</label>
+              <input id="age" name="age" type="number" placeholder="21" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="phone">Номер телефона</label>
+              <input id="phone" name="phone" type="text" placeholder="+1 555-123-4567" required>
+            </div>
+
+            <div class="field">
+              <label for="passport">Номер паспорта / ID</label>
+              <input id="passport" name="passport" type="text" placeholder="SA-123456">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="residence">Место проживания</label>
+              <input id="residence" name="residence" type="text" placeholder="Los Santos">
+            </div>
+
+            <div class="field">
+              <label for="education">Образование</label>
+              <select id="education" name="education">
+                <option value="Среднее">Среднее</option>
+                <option value="Среднее специальное">Среднее специальное</option>
+                <option value="Неоконченное высшее">Неоконченное высшее</option>
+                <option value="Высшее">Высшее</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="experience">Опыт работы</label>
+            <textarea id="experience" name="experience" placeholder="Опишите предыдущую работу, стажировку, военную службу или иной полезный опыт"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="skills">Навыки и сильные стороны</label>
+            <textarea id="skills" name="skills" placeholder="Стрессоустойчивость, знание законодательства, физическая подготовка и т.д."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="motivation">Почему хотите вступить в полицейскую академию?</label>
+            <textarea id="motivation" name="motivation" placeholder="Подробно опишите свою мотивацию" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="extra">Дополнительная информация</label>
+            <textarea id="extra" name="extra" placeholder="Любая информация, которую хотите добавить"></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary">Сгенерировать</button>
+            <button type="button" class="btn-secondary" id="copyBtn">Копировать</button>
+            <button type="reset" class="btn-secondary">Очистить</button>
+          </div>
+
+          <div class="hint">После нажатия «Сгенерировать» справа появится готовый текст заявки.</div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Готовая заявка</h2>
+        <div id="output" class="output">Здесь появится сгенерированный текст заявки.</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById("academyForm");
+    const output = document.getElementById("output");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function value(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    function buildApplication() {
+      const fullName = value("fullName");
+      const age = value("age");
+      const phone = value("phone");
+      const passport = value("passport");
+      const residence = value("residence");
+      const education = value("education");
+      const experience = value("experience");
+      const skills = value("skills");
+      const motivation = value("motivation");
+      const extra = value("extra");
+
+      return `[Academy Application]
+
+1. Personal Information
+Full Name: ${fullName || "-"}
+Age: ${age || "-"}
+Phone Number: ${phone || "-"}
+Passport / ID: ${passport || "-"}
+Place of Residence: ${residence || "-"}
+
+2. Education
+${education || "-"}
+
+3. Work Experience
+${experience || "-"}
+
+4. Skills and Strengths
+${skills || "-"}
+
+5. Motivation
+${motivation || "-"}
+
+6. Additional Information
+${extra || "-"}
+
+I, ${fullName || "the applicant"}, confirm that the information provided above is accurate and complete. I understand that false information may result in denial of admission to the academy.
+
+Date: __________________
+Signature: __________________`;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      output.textContent = buildApplication();
+    });
+
+    copyBtn.addEventListener("click", async function () {
+      const text = output.textContent.trim();
+
+      if (!text || text === "Здесь появится сгенерированный текст заявки.") {
+        alert("Сначала сгенерируй заявку.");
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = "Скопировано";
+        setTimeout(() => {
+          copyBtn.textContent = "Копировать";
+        }, 1500);
+      } catch (err) {
+        alert("Не удалось скопировать текст.");
+      }
+    });
+
+    form.addEventListener("reset", function () {
+      setTimeout(() => {
+        output.textContent = "Здесь появится сгенерированный текст заявки.";
+      }, 0);
+    });
+  </script>
+</body>
+</html>
