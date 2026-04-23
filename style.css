@@ -183,3 +183,12 @@ main {
     grid-template-columns: 1fr;
   }
 }
+.tab.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tab.disabled::after {
+  display: none;
+}
