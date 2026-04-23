@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор Back Home Program</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #08111d;
+      color: #fff;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .top-link {
+      display: inline-block;
+      margin-bottom: 18px;
+      color: #8fb3ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .top-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #0b1627;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 24px;
+    }
+
+    .section {
+      margin-bottom: 26px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .section h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      color: #dbe7ff;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,.88);
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.14);
+      background: #132034;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #2f66ff;
+      box-shadow: 0 0 0 3px rgba(47, 102, 255, 0.15);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .check label {
+      display: inline-flex;
+      gap: 10px;
+      align-items: flex-start;
+      cursor: pointer;
+      color: rgba(255,255,255,.88);
+      line-height: 1.5;
+    }
+
+    .check input {
+      margin-top: 3px;
+    }
+
+    .notice {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2f55b8;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #3a66d9;
+    }
+
+    .btn-secondary {
+      background: #1a2940;
+      color: white;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,.55);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 18px;
+      z-index: 9999;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 800px);
+      background: #ffffff;
+      color: #333;
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 16px;
+      border-bottom: 1px solid #e5e5e5;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: 0;
+      color: #888;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+      width: auto;
+    }
+
+    .modal-body {
+      padding: 18px 30px 18px;
+    }
+
+    .modal-field {
+      margin-bottom: 16px;
+    }
+
+    .modal-label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .modal-row {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .modal-input {
+      flex: 1;
+      height: 38px;
+      border: 1px solid #d6d6d6;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 15px;
+      color: #444;
+      background: #fff;
+    }
+
+    .modal-copy-btn {
+      min-width: 120px;
+      height: 38px;
+      border: 1px solid #9aa4af;
+      border-radius: 4px;
+      background: #f8f8f8;
+      color: #5d6a75;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 12px;
+    }
+
+    .modal-copy-btn:hover {
+      background: #eeeeee;
+    }
+
+    .modal-textarea-row {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .modal-textarea {
+      flex: 1;
+      min-height: 255px;
+      resize: vertical;
+      border: 1px solid #d6d6d6;
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 15px;
+      color: #444;
+      background: #fff;
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .modal-footer {
+      padding: 14px 16px;
+      border-top: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #fff;
+    }
+
+    .modal-btn {
+      border: 0;
+      border-radius: 4px;
+      height: 40px;
+      padding: 0 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .modal-btn-secondary {
+      background: #6c757d;
+      color: #fff;
+    }
+
+    .modal-btn-primary {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-row,
+      .modal-textarea-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .modal-copy-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <a class="top-link" href="../index.html">← Назад на главную</a>
+    <h1>Генератор Back Home Program</h1>
+    <p class="subtitle">Форма возвращения во фракцию с генерацией готового BBCode.</p>
+
+    <div class="layout">
+      <section class="panel">
+        <h2>Заполнение заявления</h2>
+
+        <form id="backHomeForm">
+          <div class="section">
+            <h3>Основная информация</h3>
+
+            <div class="row">
+              <div class="field">
+                <label for="charName">Ник персонажа</label>
+                <input id="charName" type="text" placeholder="Name Surname">
+              </div>
+
+              <div class="field">
+                <label for="oocNickname">OOC никнейм</label>
+                <input id="oocNickname" type="text" placeholder="Ваш игровой ник">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="fractions">Фракции в которых вы состояли</label>
+              <textarea id="fractions" placeholder="Перечислите все фракции"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="futurePlans">Планы на будущего персонажа, описание</label>
+              <textarea id="futurePlans" placeholder="Что планируете играть после возвращения"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="characterDescription">Полное описание персонажа</label>
+              <textarea id="characterDescription" placeholder="Подробное описание персонажа"></textarea>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Ссылки и контакты</h3>
+
+            <div class="field">
+              <label for="forumAccount">Ссылка на форумный аккаунт (G-RP)</label>
+              <input id="forumAccount" type="text" placeholder="Ссылка на аккаунт">
+            </div>
+
+            <div class="field">
+              <label for="twoFactorScreenshot">Необработанный скриншот двухфакторной защиты (TG/Google)</label>
+              <input id="twoFactorScreenshot" type="text" placeholder="Ссылка на скриншот">
+            </div>
+
+            <div class="field">
+              <label for="ucpScreenshot">Необработанный скриншот UCP</label>
+              <input id="ucpScreenshot" type="text" placeholder="Ссылка на скриншот">
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="vkLink">Ссылка на страницу ВКонтакте</label>
+                <input id="vkLink" type="text" placeholder="https://vk.com/...">
+              </div>
+
+              <div class="field">
+                <label for="discordLogin">Логин Discord</label>
+                <input id="discordLogin" type="text" placeholder="nickname#0000">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="proofs">Доказательства вашей игры (СС, необязательно за копов)</label>
+              <textarea id="proofs" placeholder="Ссылки на СС, топики, скриншоты"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="wishes">Пожелания</label>
+              <textarea id="wishes" placeholder="Дополнительные пожелания"></textarea>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>Соглашение</h3>
+
+            <div class="notice">
+              1. Я ознакомлен(-а) с правилами подачи заявления в программу возвращения домой и условиями вступления во фракцию.<br>
+              2. Я соглашаюсь, что если покину фракцию в течении 14 дней, то буду занесен в черный список (ЧС) фракции без права выхода.<br>
+              3. Я соглашаюсь, что мое заявление может быть отклонено без объяснения причин.<br>
+              4. Я понимаю, что в случае слива любой информации с ресурсов фракции я буду занесен в черный список.<br>
+              5. В случае одобрения, я обязуюсь изучить всю важную информацию фракции (руководства, правила фракции и т.д). :contentReference[oaicite:2]{index=2}
+            </div>
+
+            <div class="check" style="margin-top:14px;">
+              <label>
+                <input type="checkbox" id="agreement">
+                Я принимаю условия данного заявления
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary">Сгенерировать</button>
+            <button type="reset" class="btn-secondary">Очистить</button>
+          </div>
+
+          <div class="hint">После генерации откроется всплывающее окно с Topic Name и готовым BBCode.</div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="bbcodeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <span>Here is your BBCode!</span>
+        <button type="button" class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label" for="topicName">Topic Name</label>
+          <div class="modal-row">
+            <input type="text" id="topicName" class="modal-input" readonly>
+            <button type="button" class="modal-copy-btn" id="copyTopicBtn">Копировать</button>
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label" for="bbcodeOutput">BBCode</label>
+          <div class="modal-textarea-row">
+            <textarea id="bbcodeOutput" class="modal-textarea" readonly></textarea>
+            <button type="button" class="modal-copy-btn" id="copyBbcodeBtn">Копировать</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="modal-btn modal-btn-secondary" id="closeFooterBtn">Close</button>
+        <button type="button" class="modal-btn modal-btn-primary" id="createApplicationBtn">Create Application</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("backHomeForm");
+    const modal = document.getElementById("bbcodeModal");
+    const topicNameInput = document.getElementById("topicName");
+    const bbcodeOutput = document.getElementById("bbcodeOutput");
+
+    const copyTopicBtn = document.getElementById("copyTopicBtn");
+    const copyBbcodeBtn = document.getElementById("copyBbcodeBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const closeFooterBtn = document.getElementById("closeFooterBtn");
+    const createApplicationBtn = document.getElementById("createApplicationBtn");
+
+    function val(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    }
+
+    function checked(id) {
+      const el = document.getElementById(id);
+      return el && el.checked ? "Да" : "Нет";
+    }
+
+    function nowDate() {
+      const d = new Date();
+      return d.toLocaleDateString("ru-RU") + ", " + d.toLocaleTimeString("ru-RU");
+    }
+
+    function makeTopicName() {
+      const charName = val("charName") || "Applicant";
+      return `Back Home | ${charName}`;
+    }
+
+    function buildBBCode() {
+      return `[textarea][size=180][b]LOS SANTOS POLICE DEPARTMENT[/b][/size]
+[center][size=140]BACK HOME PROGRAM[/size][/center]
+
+[hr][/hr]
+[size=120][b]APPLICATION[/b][/size]
+[hr][/hr]
+
+[a=НИК ПЕРСОНАЖА]${val("charName") || "-"}[/a]
+[a=ООС НИКНЕЙМ]${val("oocNickname") || "-"}[/a]
+[a=ФРАКЦИИ В КОТОРЫХ ВЫ СОСТОЯЛИ]${val("fractions") || "-"}[/a]
+[a=ПЛАНЫ НА БУДУЩЕГО ПЕРСОНАЖА, ОПИСАНИЕ]${val("futurePlans") || "-"}[/a]
+[a=ПОЛНОЕ ОПИСАНИЕ ПЕРСОНАЖА]${val("characterDescription") || "-"}[/a]
+[a=ССЫЛКА НА ФОРУМНЫЙ АККАУНТ (G-RP)]${val("forumAccount") || "-"}[/a]
+[a=НЕОБРАБОТАННЫЙ СКРИНШОТ ДВУХФАКТОРНОЙ ЗАЩИТЫ (TG/GOOGLE)]${val("twoFactorScreenshot") || "-"}[/a]
+[a=НЕОБРАБОТАННЫЙ СКРИНШОТ UCP]${val("ucpScreenshot") || "-"}[/a]
+[a=ССЫЛКА НА СТРАНИЦУ ВКОНТАКТЕ]${val("vkLink") || "-"}[/a]
+[a=ЛОГИН DISCORD]${val("discordLogin") || "-"}[/a]
+[a=ДОКАЗАТЕЛЬСТВА ВАШЕЙ ИГРЫ (СС, НЕОБЯЗАТЕЛЬНО ЗА КОПОВ)]${val("proofs") || "-"}[/a]
+[a=ПОЖЕЛАНИЯ]${val("wishes") || "-"}[/a]
+
+[hr][/hr]
+[size=120][b]СОГЛАШЕНИЕ[/b][/size]
+[hr][/hr]
+[a]1. Я ознакомлен(-а) с правилами подачи заявления в программу возвращения домой и условиями вступления во фракцию.[/a]
+[a]2. Я соглашаюсь, что если покину фракцию в течении 14 дней, то буду занесен в черный список (ЧС) фракции без права выхода.[/a]
+[a]3. Я соглашаюсь, что мое заявление может быть отклонено без объяснения причин.[/a]
+[a]4. Я понимаю, что в случае слива любой информации с ресурсов фракции я буду занесен в черный список.[/a]
+[a]5. В случае одобрения, я обязуюсь изучить всю важную информацию фракции (руководства, правила фракции и т.д).[/a]
+[a=Я принимаю условия данного заявления]${checked("agreement")}[/a]
+
+[hr][/hr]
+[size=85][i]Заявка подана: ${nowDate()}[/i][/size][/textarea]`;
+    }
+
+    function openModal() {
+      modal.classList.add("show");
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+    }
+
+    async function copyText(text, button) {
+      try {
+        await navigator.clipboard.writeText(text);
+        const old = button.textContent;
+        button.textContent = "Скопировано";
+        setTimeout(() => {
+          button.textContent = old;
+        }, 1200);
+      } catch {
+        alert("Не удалось скопировать текст.");
+      }
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      topicNameInput.value = makeTopicName();
+      bbcodeOutput.value = buildBBCode();
+      openModal();
+    });
+
+    copyTopicBtn.addEventListener("click", function() {
+      copyText(topicNameInput.value, copyTopicBtn);
+    });
+
+    copyBbcodeBtn.addEventListener("click", function() {
+      copyText(bbcodeOutput.value, copyBbcodeBtn);
+    });
+
+    closeModalBtn.addEventListener("click", closeModal);
+    closeFooterBtn.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    createApplicationBtn.addEventListener("click", function() {
+      window.open("https://lspolice.ru/posting.php?mode=post&f=961", "_blank", "noopener,noreferrer");
+    });
+  </script>
+</body>
+</html>
