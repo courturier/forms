@@ -477,125 +477,102 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="modal-btn modal-btn-secondary" id="closeFooterBtn">Close</button>
-        <button type="button" class="modal-btn modal-btn-primary" id="createApplicationBtn">Create Application</button>
+        <button type="button" class="modal-btn modal-btn-secondary" id="closeFooterBtn">Закрыть</button>
+        <button type="button" class="modal-btn modal-btn-primary" id="createApplicationBtn">Создать тему</button>
       </div>
     </div>
   </div>
 
   <script>
-    const form = document.getElementById("backHomeForm");
-    const modal = document.getElementById("bbcodeModal");
-    const topicNameInput = document.getElementById("topicName");
-    const bbcodeOutput = document.getElementById("bbcodeOutput");
+  const form = document.getElementById("backHomeForm");
+  const modal = document.getElementById("bbcodeModal");
+  const topicNameInput = document.getElementById("topicName");
+  const bbcodeOutput = document.getElementById("bbcodeOutput");
 
-    const copyTopicBtn = document.getElementById("copyTopicBtn");
-    const copyBbcodeBtn = document.getElementById("copyBbcodeBtn");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-    const closeFooterBtn = document.getElementById("closeFooterBtn");
-    const createApplicationBtn = document.getElementById("createApplicationBtn");
+  const copyTopicBtn = document.getElementById("copyTopicBtn");
+  const copyBbcodeBtn = document.getElementById("copyBbcodeBtn");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+  const closeFooterBtn = document.getElementById("closeFooterBtn");
+  const createApplicationBtn = document.getElementById("createApplicationBtn");
 
-    function val(id) {
-      const el = document.getElementById(id);
-      return el ? el.value.trim() : "";
-    }
+  function val(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
 
-    function checked(id) {
-      const el = document.getElementById(id);
-      return el && el.checked ? "Да" : "Нет";
-    }
+  function makeTopicName() {
+  const charName = val("charName") || "Name Surname";
+  const ooc = val("oocNickname") || "OOC";
 
-    function nowDate() {
-      const d = new Date();
-      return d.toLocaleDateString("ru-RU") + ", " + d.toLocaleTimeString("ru-RU");
-    }
+  return `[Back Home] ${charName} (${ooc})`;
+}
 
-    function makeTopicName() {
-      const charName = val("charName") || "Applicant";
-      return `Back Home | ${charName}`;
-    }
+  function buildBBCode() {
+    return `[mail][center][img]https://www.upload.ee/image/16838635/logolspd.png[/img][/center]
+[center][font=Times New Roman][size=160][b]Back Home Program[/b][/size][/font][/center][hr][/hr][b][size=120]Application[/size][/b]
 
-    function buildBBCode() {
-      return `[textarea][size=180][b]LOS SANTOS POLICE DEPARTMENT[/b][/size]
-[center][size=140]BACK HOME PROGRAM[/size][/center]
+[size=90][b]Фракции, в которых вы состояли (включая никнеймы, проекты, лидеры и причины ухода):[/b] ${val("fractions") || "Не указано"}[/size]
+[size=90][b]Планы на будущего персонажа:[/b] ${val("futurePlans") || "Не указано"}[/size]
 
+[size=90][b]Ссылка на форумный аккаунт (G-RP):[/b] ${val("forumAccount") || "Не указано"}[/size]
+[size=90][b]ПОЛНЫЙ Скриншот защиты (Телеграм, Google):[/b] ${val("twoFactorScreenshot") || "Не указано"}[/size]
+[size=90][b]Полный скриншот окна UCP:[/b] ${val("ucpScreenshot") || "Не указано"}[/size]
+[size=90][b]Ссылка на страницу ВКонтакте:[/b] ${val("vkLink") || "Не указано"}[/size]
+[size=90][b]Ваш Discord:[/b] ${val("discordLogin") || "Не указано"}[/size]
+
+[size=90][b]Скриншоты вашей игры (СС, необязательно за копов):[/b] ${val("proofs") || "Не указано"}[/size]
+[size=90][b]Список пожеланий:[/b] ${val("wishes") || "Не указано"}[/size]
 [hr][/hr]
-[size=120][b]APPLICATION[/b][/size]
-[hr][/hr]
 
-[a=НИК ПЕРСОНАЖА]${val("charName") || "-"}[/a]
-[a=ООС НИКНЕЙМ]${val("oocNickname") || "-"}[/a]
-[a=ФРАКЦИИ В КОТОРЫХ ВЫ СОСТОЯЛИ]${val("fractions") || "-"}[/a]
-[a=ПЛАНЫ НА БУДУЩЕГО ПЕРСОНАЖА, ОПИСАНИЕ]${val("futurePlans") || "-"}[/a]
-[a=ПОЛНОЕ ОПИСАНИЕ ПЕРСОНАЖА]${val("characterDescription") || "-"}[/a]
-[a=ССЫЛКА НА ФОРУМНЫЙ АККАУНТ (G-RP)]${val("forumAccount") || "-"}[/a]
-[a=НЕОБРАБОТАННЫЙ СКРИНШОТ ДВУХФАКТОРНОЙ ЗАЩИТЫ (TG/GOOGLE)]${val("twoFactorScreenshot") || "-"}[/a]
-[a=НЕОБРАБОТАННЫЙ СКРИНШОТ UCP]${val("ucpScreenshot") || "-"}[/a]
-[a=ССЫЛКА НА СТРАНИЦУ ВКОНТАКТЕ]${val("vkLink") || "-"}[/a]
-[a=ЛОГИН DISCORD]${val("discordLogin") || "-"}[/a]
-[a=ДОКАЗАТЕЛЬСТВА ВАШЕЙ ИГРЫ (СС, НЕОБЯЗАТЕЛЬНО ЗА КОПОВ)]${val("proofs") || "-"}[/a]
-[a=ПОЖЕЛАНИЯ]${val("wishes") || "-"}[/a]
+Подавая заявление, я автоматически соглашаюсь со всеми правилами подачи заявления в программу возвращения домой.[/mail]`;
+  }
 
-[hr][/hr]
-[size=120][b]СОГЛАШЕНИЕ[/b][/size]
-[hr][/hr]
-[a]1. Я ознакомлен(-а) с правилами подачи заявления в программу возвращения домой и условиями вступления во фракцию.[/a]
-[a]2. Я соглашаюсь, что если покину фракцию в течении 14 дней, то буду занесен в черный список (ЧС) фракции без права выхода.[/a]
-[a]3. Я соглашаюсь, что мое заявление может быть отклонено без объяснения причин.[/a]
-[a]4. Я понимаю, что в случае слива любой информации с ресурсов фракции я буду занесен в черный список.[/a]
-[a]5. В случае одобрения, я обязуюсь изучить всю важную информацию фракции (руководства, правила фракции и т.д).[/a]
-[a=Я принимаю условия данного заявления]${checked("agreement")}[/a]
+  function openModal() {
+    modal.classList.add("show");
+  }
 
-[hr][/hr]
-[size=85][i]Заявка подана: ${nowDate()}[/i][/size][/textarea]`;
+  function closeModal() {
+    modal.classList.remove("show");
+  }
+
+  async function copyText(text, button) {
+    try {
+      await navigator.clipboard.writeText(text);
+      const old = button.textContent;
+      button.textContent = "Скопировано";
+      setTimeout(() => {
+        button.textContent = old;
+      }, 1200);
+    } catch {
+      alert("Не удалось скопировать текст.");
     }
+  }
 
-    function openModal() {
-      modal.classList.add("show");
-    }
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    topicNameInput.value = makeTopicName();
+    bbcodeOutput.value = buildBBCode();
+    openModal();
+  });
 
-    function closeModal() {
-      modal.classList.remove("show");
-    }
+  copyTopicBtn.addEventListener("click", function() {
+    copyText(topicNameInput.value, copyTopicBtn);
+  });
 
-    async function copyText(text, button) {
-      try {
-        await navigator.clipboard.writeText(text);
-        const old = button.textContent;
-        button.textContent = "Скопировано";
-        setTimeout(() => {
-          button.textContent = old;
-        }, 1200);
-      } catch {
-        alert("Не удалось скопировать текст.");
-      }
-    }
+  copyBbcodeBtn.addEventListener("click", function() {
+    copyText(bbcodeOutput.value, copyBbcodeBtn);
+  });
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      topicNameInput.value = makeTopicName();
-      bbcodeOutput.value = buildBBCode();
-      openModal();
-    });
+  closeModalBtn.addEventListener("click", closeModal);
+  closeFooterBtn.addEventListener("click", closeModal);
 
-    copyTopicBtn.addEventListener("click", function() {
-      copyText(topicNameInput.value, copyTopicBtn);
-    });
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal) closeModal();
+  });
 
-    copyBbcodeBtn.addEventListener("click", function() {
-      copyText(bbcodeOutput.value, copyBbcodeBtn);
-    });
-
-    closeModalBtn.addEventListener("click", closeModal);
-    closeFooterBtn.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", function(e) {
-      if (e.target === modal) closeModal();
-    });
-
-    createApplicationBtn.addEventListener("click", function() {
-      window.open("https://lspolice.ru/posting.php?mode=post&f=961", "_blank", "noopener,noreferrer");
-    });
-  </script>
+  createApplicationBtn.addEventListener("click", function() {
+    window.open("https://lspolice.ru/posting.php?mode=post&f=907", "_blank", "noopener,noreferrer");
+  });
+</script>
 </body>
 </html>
